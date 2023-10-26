@@ -1,0 +1,26 @@
+{% extends 'products/base.html' %}
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'vendor/css/styles.css' %}">
+
+{% block css %}
+<style>
+    body {
+        background-image: url("{% static 'vendor\img\concept.jpg' %}");
+        background-size: cover; 
+        background-repeat: no-repeat; 
+    }
+</style>
+{% endblock %}
+
+{% block header %} 
+    Добро пожаловать в наш магазин
+{% endblock %}
+{% block navigation %}
+    <a class="nav-button" href="{% url 'products:list' %}">Перейти к каталогу</a>
+    <a class="nav-button" href="{% url 'token' %}">Получить токен</a>
+{% endblock %}
+
+{% block content %}
+
+{% endblock %}

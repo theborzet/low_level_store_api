@@ -1,0 +1,39 @@
+{% extends 'products/base.html' %}
+{% load static %}
+
+{% block header %} 
+    Добро пожаловать в наш магазин
+{% endblock %}
+{% block navigation %}
+    <a class="nav-button" href="{% url 'index' %}">Получить токен</a>
+    <a class="nav-button" href="{% url 'products:add' %}?token={{ token }}">Добавить новый товар</a>
+    <a class="nav-button" href="{% url 'index' %}">Перейти на главную страницу</a>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            {% for product in object_list %}
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h4 class="card-title">
+                            <a href="#">{{ forloop.counter }}. {{ product.name }}</a>
+                        </h4>
+                        <p class="card-text">
+                            Цена: {{ product.price }} руб.
+                            <br>
+                            Количество: {{ product.amount }}
+                        </p>
+                    </div>
+                    <!-- <div class="card-footer text-center">
+                        <a class="btn btn-outline-success" href="{% url 'index' %}">
+                            Отправить в корзину
+                        </a>
+                    </div> -->
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="{% static 'vendor/css/styles.css' %}">
+    {% block css %}{% endblock %} <!-- Добавляем блок CSS -->
+</head>
+<body>
+    <header>
+        <h1>{% block header %}{% endblock %}</h1>
+    </header>
+    <nav>
+        {% block navigation %}{% endblock %}
+    </nav>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    <footer>
+        <!-- Здесь можно разместить информацию в подвале страницы -->
+    </footer>
+</body>
+</html>
