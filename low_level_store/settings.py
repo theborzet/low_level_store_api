@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'products',
+    'users'
 ]
 
 MIDDLEWARE = [
@@ -53,6 +54,12 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'low_level_store.urls'
 
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    # Другие бэкенды, если есть
+)
+AUTHENTICATION_FORM = 'users.forms.UserLoginForm'
+AUTH_USER_MODEL = 'users.CustomUser'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

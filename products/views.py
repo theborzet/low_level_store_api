@@ -3,10 +3,12 @@ from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 from django.http import HttpResponse, JsonResponse
 from django.views import View
-from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
+
+
 from common.views import TitleMixin
-from products.models import Product, Token
+from products.models import Product
+from users.models import Token
 from products.forms import NewGoodForm
 
 
@@ -24,11 +26,14 @@ class ProductListView(TitleMixin, ListView):
     paginate_by = 10
 
 
-def generate_token(request):
-    token = Token.objects.filter().first()
-    if token is None:
-        token = Token.objects.create()
-    return JsonResponse({'token': str(token.value)})
+class GenerateTokenView(View):
+    def get(self, request):
+        if request.user.is_authenticated:
+            user = request.user
+            token, created = Token.objects.get_or_create(user=user)
+            return JsonResponse({'token': str(token.value)})
+        else:
+            return JsonResponse({'error': 'User is not authenticated'}, status=401)
 
 class NewGoodView(View):
     @login_required(login_url=None)

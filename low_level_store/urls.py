@@ -17,14 +17,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from products.views import IndexView, generate_token
+from products.views import IndexView, GenerateTokenView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', IndexView.as_view(), name='index'), 
     path('home/', IndexView.as_view(), name='index'), 
     path('products/', include('products.urls', namespace='products')),
-    path('get_token/', generate_token, name='token'), 
+    path('users/', include('users.urls', namespace='users')),
+    path('get_token/', GenerateTokenView.as_view(), name='token'), 
 
     
 ]

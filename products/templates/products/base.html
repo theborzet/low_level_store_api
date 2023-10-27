@@ -10,10 +10,19 @@
 </head>
 <body>
     <header>
-        <h1>{% block header %}{% endblock %}</h1>
+        <li class="nav-button">
+            <a class="nav-button" href="{% url 'users:logout' %}">
+                Выйти
+            </a>
+        </li>   
+        <h1>
+            {% block header %}{% endblock %}
+        </h1>
     </header>
-    <nav>
+    <nav>  
         {% block navigation %}{% endblock %}
+           
+
     </nav>
     <main>
         {% block content %}{% endblock %}

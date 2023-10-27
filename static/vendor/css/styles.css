@@ -47,3 +47,20 @@ nav {
 .nav-button:hover {
     background-color: #0056b3; /* Новый цвет фона при наведении */
 }
+
+.button {
+    margin: 0 10px;
+    padding: 10px 20px;
+    background-color: #c7cdd4; /* Цвет фона кнопки */
+    color: #fff; /* Цвет текста */
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s; /* Плавное изменение цвета фона при наведении */
+    text-align: right;
+}
+
+.button:hover {
+    background-color: #0056b3; /* Новый цвет фона при наведении */
+}
