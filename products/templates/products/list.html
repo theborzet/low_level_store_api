@@ -6,7 +6,7 @@
 {% endblock %}
 {% block navigation %}
     <a class="nav-button" href="{% url 'index' %}">Получить токен</a>
-    <a class="nav-button" href="{% url 'products:add' %}?token={{ token }}">Добавить новый товар</a>
+    <a class="nav-button" href="{% url 'products:add_product' %}?token={{ token }}">Добавить новый товар</a>
     <a class="nav-button" href="{% url 'index' %}">Перейти на главную страницу</a>
 {% endblock %}
 

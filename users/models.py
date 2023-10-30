@@ -6,7 +6,10 @@ from uuid import uuid4
 
 
 class CustomUser(AbstractUser):
-    token = models.UUIDField(default=uuid4, unique=False, editable=False, null=True)
+    token = models.UUIDField(unique=False, editable=False, null=True)
+    
+    class Meta:
+        unique_together = ['username']
 
 class Token(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='user_tokens')

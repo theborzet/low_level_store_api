@@ -1,14 +1,14 @@
 from django.shortcuts import render
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
-from django.http import HttpResponse, JsonResponse
+from django.http import  JsonResponse
 from django.views import View
 from django.contrib.auth.decorators import login_required
 
 
 from common.views import TitleMixin
 from products.models import Product
-from users.models import Token
+from users.models import Token, CustomUser
 from products.forms import NewGoodForm
 
 
@@ -30,43 +30,44 @@ class GenerateTokenView(View):
     def get(self, request):
         if request.user.is_authenticated:
             user = request.user
-            token, created = Token.objects.get_or_create(user=user)
-            return JsonResponse({'token': str(token.value)})
+
+            try:
+                user_token = CustomUser.objects.get(username=user)
+            except CustomUser.DoesNotExist:
+                user_token = CustomUser(username=user)
+
+            token, token_created = Token.objects.get_or_create(user=user_token)
+            
+            if token_created:   
+                message = 'You are authenticated. Your new token: ' + str(token.value)
+
+            else:
+                message = ' Your token: ' + str(token.value) if token.value else 'No token associated with the user.'
+
+            user_token.token = token.value
+            user_token.save()
+
+            return JsonResponse({'message': message})
         else:
             return JsonResponse({'error': 'User is not authenticated'}, status=401)
-
 class NewGoodView(View):
-    @login_required(login_url=None)
     def get(self, request):
-        token_value = request.session.get('user_token', None)
-        if not token_value:
-            return HttpResponse('Token must be present.', status=401)
-        try:
-            token = Token.objects.get(value=token_value)
-            token_value = token.value
-        except Token.DoesNotExist:
-            return HttpResponse('Token is invalid.', status=401)
-        context = {'token': token_value, 'form': NewGoodForm()}
-        return render(request, 'add_product.html', context)
-    
+        user = request.user
+        token = user.token  
+        context = {'token': token, 'form': NewGoodForm()}
+        return render(request, 'users/add_product.html', context)
 
     def post(self, request):
-        token_value = request.session.get('user_token', None)
-        if not token_value:
-            return HttpResponse('Token must be present.', status=401)
-        try:
-            token = Token.objects.get(value=token_value)
-            token_value = token.value        
-        except Token.DoesNotExist:
-            return HttpResponse('Token is invalid.', status=401)
+        user = request.user
+        token = user.token  
         form = NewGoodForm(request.POST)
         if form.is_valid():
             product = Product(
                 name=form.cleaned_data['name'],
+                price=form.cleaned_data['price'],
                 amount=form.cleaned_data['amount'],
-                price=form.cleaned_data['price']
             )
             product.save()
         else:
-            context = {'token': token_value, 'form': form}  
-            return render(request, 'add_product.html', context)
+            context = {'token': token, 'form': form}  
+            return render(request, 'users/add_product.html', context)

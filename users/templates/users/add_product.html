@@ -1,0 +1,60 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Добавление продукта</title>
+    <link rel="stylesheet" href="{% static 'vendor/css/styles.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Добавление продукта</h1>
+    </header>
+    <nav>
+        <div class="container">
+            <div class="navigation">
+                <a class="nav-button" href="/">Главная</a>
+                <a class="nav-button" href="/products/list/">Продукты</a>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <form method="post" action="{% url 'products:add_product' %}">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="small mb-1" for="{{ form.name.id_for_label }}">
+                            Название продукта
+                        </label>
+                        {{ form.name }}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="small mb-1" for="{{ form.price.id_for_label }}">
+                            Цена
+                        </label>
+                        {{ form.price }}                                            
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="small mb-1" for="{{ form.amount.id_for_label }}">
+                            Количество
+                        </label>
+                        {{ form.amount }}                                         
+                    </div>
+                </div>
+            </div>
+            <div class="form-group mt-4 mb-0">
+                <input class="btn btn-primary btn-block" type="submit" value="Создать аккаунт">
+            </div>
+        </form>
+    </div>
+</body>
+</html>
