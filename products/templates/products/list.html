@@ -2,11 +2,11 @@
 {% load static %}
 
 {% block header %} 
-    Добро пожаловать в наш магазин
+    Каталог товаров
 {% endblock %}
 {% block navigation %}
     <a class="nav-button" href="{% url 'index' %}">Перейти на главную страницу</a>
-    <a class="nav-button" href="{% url 'products:add_product' %}?token={{ token }}">Добавить новый товар</a>
+    <a class="nav-button" href="{% url 'products:add_product' %}">Добавить новый товар</a>
     <a class="nav-button" href="{% url 'token' %}">Получить токен</a>
 {% endblock %}
 
