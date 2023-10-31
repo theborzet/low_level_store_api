@@ -5,9 +5,9 @@
     Добро пожаловать в наш магазин
 {% endblock %}
 {% block navigation %}
-    <a class="nav-button" href="{% url 'index' %}">Получить токен</a>
-    <a class="nav-button" href="{% url 'products:add_product' %}?token={{ token }}">Добавить новый товар</a>
     <a class="nav-button" href="{% url 'index' %}">Перейти на главную страницу</a>
+    <a class="nav-button" href="{% url 'products:add_product' %}?token={{ token }}">Добавить новый товар</a>
+    <a class="nav-button" href="{% url 'token' %}">Получить токен</a>
 {% endblock %}
 
 {% block content %}
@@ -26,11 +26,6 @@
                             Количество: {{ product.amount }}
                         </p>
                     </div>
-                    <!-- <div class="card-footer text-center">
-                        <a class="btn btn-outline-success" href="{% url 'index' %}">
-                            Отправить в корзину
-                        </a>
-                    </div> -->
                 </div>
             </div>
             {% endfor %}

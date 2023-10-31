@@ -3,7 +3,8 @@ from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 from django.http import  JsonResponse
 from django.views import View
-from django.contrib.auth.decorators import login_required
+from django.shortcuts import HttpResponsePermanentRedirect
+from django.urls import reverse
 
 
 from common.views import TitleMixin
@@ -26,7 +27,8 @@ class ProductListView(TitleMixin, ListView):
     paginate_by = 10
 
 
-class GenerateTokenView(View):
+class GenerateTokenView(TitleMixin, View):
+    title = 'Store - Получение токена'
     def get(self, request):
         if request.user.is_authenticated:
             user = request.user
@@ -50,24 +52,26 @@ class GenerateTokenView(View):
             return JsonResponse({'message': message})
         else:
             return JsonResponse({'error': 'User is not authenticated'}, status=401)
-class NewGoodView(View):
+class NewGoodView(TitleMixin, View):
+    title = 'Store - Добавление товара'
     def get(self, request):
         user = request.user
-        token = user.token  
-        context = {'token': token, 'form': NewGoodForm()}
-        return render(request, 'users/add_product.html', context)
+        token = user.token if user.is_authenticated else None 
+        if token:
+            context = {'token': token, 'form': NewGoodForm()}
+            return render(request, 'users/add_product.html', context)
+        else:
+            return JsonResponse({'error': 'Take your token'})           
 
     def post(self, request):
         user = request.user
-        token = user.token  
+        token = user.token if user.is_authenticated else None 
         form = NewGoodForm(request.POST)
-        if form.is_valid():
+        if form.is_valid() and token:
             product = Product(
                 name=form.cleaned_data['name'],
                 price=form.cleaned_data['price'],
                 amount=form.cleaned_data['amount'],
             )
             product.save()
-        else:
-            context = {'token': token, 'form': form}  
-            return render(request, 'users/add_product.html', context)
+            return HttpResponsePermanentRedirect(reverse('products:list'))

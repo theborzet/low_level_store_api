@@ -14,7 +14,12 @@
             <a class="nav-button" href="{% url 'users:logout' %}">
                 Выйти
             </a>
-        </li>   
+        </li>
+        <li class="nav-button">
+            <a class="nav-button" href="{% url 'users:login' %}">
+                Войти
+            </a>
+        </li>    
         <h1>
             {% block header %}{% endblock %}
         </h1>

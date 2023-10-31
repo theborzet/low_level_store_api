@@ -14,5 +14,6 @@ class UserLoginView(TitleMixin, LoginView):
     template_name = 'users/base.html'
     form_class = UserLoginForm
     success_url = reverse_lazy('index')
-class UserLogoutView(LogoutView):
+class UserLogoutView(TitleMixin, LogoutView):
+    title = 'Store - Выход'
     pass
